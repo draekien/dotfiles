@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 7,
+  "env": {
+    "ENABLE_LSP_TOOL": "1",
+    "DISABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "200000",
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "CLAUDE_CODE_USE_POWERSHELL_TOOL": "1",
+    "CLAUDE_CODE_NEW_INIT": "1"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash(cat*)",
+      "Bash(date*)",
+      "Bash(echo*)",
+      "Bash(gh api*)",
+      "Bash(gh pr view*)",
+      "Bash(gh repo view*)",
+      "Bash(git add*)",
+      "Bash(git checkout*)",
+      "Bash(git commit*)",
+      "Bash(git diff*)",
+      "Bash(git fetch*)",
+      "Bash(git log*)",
+      "Bash(git pull*)",
+      "Bash(git stash pop*)",
+      "Bash(git stash*)",
+      "Bash(git status*)",
+      "Bash(git tag*)",
+      "Bash(grep*)",
+      "Bash(head*)",
+      "Bash(ls*)",
+      "Bash(mkdir*)",
+      "Bash(node*)",
+      "Bash(pnpm add*)",
+      "Bash(pnpm check*)",
+      "Bash(pnpm exec tsc*)",
+      "Bash(pnpm lint*)",
+      "Bash(pnpm migrate:gen*)",
+      "Bash(pnpm vitest*)",
+      "Bash(sort*)",
+      "Bash(tail*)",
+      "Bash(tr*)",
+      "Bash(wc*)",
+      "mcp__context7__query-docs",
+      "mcp__context7__resolve-library-id",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__shadcn__get_item_examples_from_registries",
+      "mcp__shadcn__search_items_in_registries",
+      "mcp__shadcn__view_items_in_registries",
+      "Skill(code-review:code-review)",
+      "Skill(commit-commands:commit)",
+      "WebSearch"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/secrets/*)",
+      "Read(**/*credential*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)"
+    ],
+    "defaultMode": "auto"
+  },
+  "model": "opusplan",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx -y @membank/cli inject --harness claude-code"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "clear|resume|logout|prompt_input_exit|other",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx -y @membank/cli extract --harness claude-code",
+            "async": true,
+            "timeout": 600
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": false,
+    "code-review@claude-plugins-official": false,
+    "code-simplifier@claude-plugins-official": false,
+    "commit-commands@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": false,
+    "claude-md-management@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": false,
+    "rust-analyzer-lsp@claude-plugins-official": false,
+    "github@claude-plugins-official": false,
+    "plugin-dev@claude-plugins-official": false,
+    "sentry@claude-plugins-official": true,
+    "obsidian@obsidian-skills": false,
+    "vtsls-lsp@athena": false,
+    "impeccable@impeccable": true,
+    "everything@draekien-skills": true,
+    "vercel@claude-plugins-official": false,
+    "mcp-server-dev@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      },
+      "autoUpdate": true
+    },
+    "athena": {
+      "source": {
+        "source": "github",
+        "repo": "draekien-industries/athena"
+      },
+      "autoUpdate": true
+    },
+    "obsidian-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kepano/obsidian-skills"
+      },
+      "autoUpdate": true
+    },
+    "impeccable": {
+      "source": {
+        "source": "github",
+        "repo": "pbakaus/impeccable"
+      },
+      "autoUpdate": true
+    },
+    "draekien-skills": {
+      "source": {
+        "source": "github",
+        "repo": "draekien/skills"
+      },
+      "autoUpdate": true
+    }
+  },
+  "effortLevel": "medium",
+  "autoUpdatesChannel": "latest",
+  "autoDreamEnabled": true,
+  "preferredNotifChannel": "terminal_bell",
+  "skipAutoPermissionPrompt": true
+}
