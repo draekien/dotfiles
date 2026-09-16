@@ -207,7 +207,7 @@
       "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
       "### User-specific",
       "**Primary use of Claude Code**: software development",
-      "**Org-specific CLIs**: None configured — `git`/`gh`/`pnpm`/`yarn`/`dotnet`/`npm`/`npx`/`cargo`/`corepack`/`fnm`/`docfx`/`aspire`/`rustup` seen in shell history are generic developer tooling, not org-specific",
+      "**Org-specific CLIs**: None configured — `git`/`gh`/`pnpm`/`yarn`/`dotnet`/`npm`/`npx`/`cargo`/`corepack`/`fnm`/`docfx`/`aspire`/`rustup` seen in shell history are generic developer tooling, not org-specific"
     ]
   }
 }
