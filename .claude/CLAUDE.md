@@ -9,7 +9,7 @@
 
 - use conventional commit messages everywhere, including PR titles.
 - do not write comments except when documenting public facing API surfaces.
-- match multi-line string syntax to the shell of the tool actually running the command. The Bash tool is POSIX sh: use a heredoc (`git commit -F - <<'EOF' … EOF`) or a plain quoted `-m`. The PowerShell tool uses a here-string (`@'…'@`). Never use PowerShell here-string syntax in the Bash tool — `@'…'@` there is not a here-string; `@` is taken literally and leaks stray `@` lines into commit messages. A hook blocks any Bash command containing `"@` on that same reading, so content with a quoted scoped package name (`"@membank/dashboard": patch`) cannot go through a heredoc at all — write the file with the Write tool instead.
+- match multi-line string syntax to the shell of the tool actually running the command. The Bash tool is POSIX sh: use a heredoc (`git commit -F - <<'EOF' … EOF`) or a plain quoted `-m`. The PowerShell tool uses a here-string (`@'…'@`). Never use PowerShell here-string syntax in the Bash tool — `@'…'@` there is not a here-string; `@` is taken literally and leaks stray `@` lines into commit messages. A hook blocks any Bash command containing `"@` on that same reading.
 
 ## Model Selection
 
