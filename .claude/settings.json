@@ -114,6 +114,22 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/prefer-skills.sh\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/prefer-direct-statements.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
     ]
   },
   "disableRemoteControl": true,
@@ -147,7 +163,8 @@
     "quality-skills@draekien-skills": true,
     "software-design-skills@draekien-skills": true,
     "technical-writing-skills@draekien-skills": true,
-    "version-control-skills@draekien-skills": true
+    "version-control-skills@draekien-skills": true,
+    "agent-config-skills@draekien-skills": true
   },
   "extraKnownMarketplaces": {
     "draekien-skills": {
