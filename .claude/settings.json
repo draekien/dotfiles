@@ -2,14 +2,18 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 7,
   "env": {
-    "ENABLE_LSP_TOOL": "1",
-    "DISABLE_TELEMETRY": "1",
+    "ENABLE_LSP_TOOL": "0",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75",
-    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "200000",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "400000",
     "CLAUDE_CODE_NO_FLICKER": "1",
+    "OTEL_METRICS_EXPORTER": "none",
+    "OTEL_LOGS_EXPORTER": "none",
+    "OTEL_LOG_USER_PROMPTS": "0",
+    "OTEL_LOG_TOOL_DETAILS": "0",
+    "OTEL_LOG_TOOL_CONTENT": "0",
     "CLAUDE_CODE_USE_POWERSHELL_TOOL": "1",
     "CLAUDE_CODE_NEW_INIT": "1"
   },
@@ -40,7 +44,6 @@
       "Bash(head*)",
       "Bash(ls*)",
       "Bash(mkdir*)",
-      "Bash(node*)",
       "Bash(pnpm add*)",
       "Bash(pnpm check*)",
       "Bash(pnpm exec tsc*)",
@@ -51,6 +54,7 @@
       "Bash(tail*)",
       "Bash(tr*)",
       "Bash(wc*)",
+      "Read(.env.example)",
       "mcp__context7__query-docs",
       "mcp__context7__resolve-library-id",
       "mcp__plugin_playwright_playwright__browser_navigate",
@@ -65,82 +69,91 @@
       "Read(.env)",
       "Read(.env.*)",
       "Read(**/secrets/*)",
-      "Read(**/*credential*)",
+      "Read(**/*credentials.yaml)",
+      "Read(**/*credentials.json)",
+      "Read(**/.aws/credentials)",
       "Read(**/*.pem)",
       "Read(**/*.key)"
     ],
     "defaultMode": "auto"
   },
-  "model": "opusplan",
+  "model": "opus[1m]",
+  "disableClaudeAiConnectors": true,
+  "disableBundledSkills": false,
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume|clear|compact",
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
-            "command": "npx -y @membank/cli inject --harness claude-code"
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\William\\.claude\\hooks\\herdr-agent-state.ps1\" session",
+            "timeout": 10
           }
         ]
       }
     ],
-    "SessionEnd": [
+    "PreToolUse": [
       {
-        "matcher": "clear|resume|logout|prompt_input_exit|other",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "npx -y @membank/cli extract --harness claude-code",
-            "async": true,
-            "timeout": 600
+            "command": "bash \"$HOME/.claude/hooks/no-pwsh-heredoc.sh\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "tldraw-offline",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh 'C:\\Users\\William\\skills\\tldraw-offline\\inject-server-context.sh' SubagentStart"
           }
         ]
       }
     ]
   },
+  "disableRemoteControl": true,
+  "disableWorkflows": true,
+  "disableArtifact": true,
+  "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",
     "command": "npx -y ccstatusline@latest",
     "padding": 0
   },
   "enabledPlugins": {
-    "frontend-design@claude-plugins-official": false,
+    "claude-code-setup@claude-plugins-official": false,
+    "claude-md-management@claude-plugins-official": true,
     "code-review@claude-plugins-official": false,
     "code-simplifier@claude-plugins-official": false,
-    "commit-commands@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": false,
-    "claude-md-management@claude-plugins-official": true,
-    "claude-code-setup@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": false,
+    "mcp-server-dev@claude-plugins-official": false,
     "rust-analyzer-lsp@claude-plugins-official": false,
-    "github@claude-plugins-official": false,
-    "plugin-dev@claude-plugins-official": false,
-    "sentry@claude-plugins-official": true,
-    "obsidian@obsidian-skills": false,
-    "vtsls-lsp@athena": false,
+    "security-guidance@claude-plugins-official": false,
+    "playwright@claude-plugins-official": true,
     "impeccable@impeccable": true,
-    "everything@draekien-skills": true,
-    "vercel@claude-plugins-official": false,
-    "mcp-server-dev@claude-plugins-official": true
+    "waystone-dotnet@waystone-dotnet": true,
+    "plugin-dev@claude-plugins-official": false,
+    "meta-skills@draekien-skills": true,
+    "output-styles@draekien-skills": true,
+    "productivity-skills@draekien-skills": true,
+    "ui-ux-skills@draekien-skills": true,
+    "context-management-skills@draekien-skills": true,
+    "teaching-skills@draekien-skills": true,
+    "quality-skills@draekien-skills": true,
+    "software-design-skills@draekien-skills": true,
+    "technical-writing-skills@draekien-skills": true,
+    "version-control-skills@draekien-skills": true
   },
   "extraKnownMarketplaces": {
-    "anthropic-agent-skills": {
+    "draekien-skills": {
       "source": {
         "source": "github",
-        "repo": "anthropics/skills"
-      },
-      "autoUpdate": true
-    },
-    "athena": {
-      "source": {
-        "source": "github",
-        "repo": "draekien-industries/athena"
-      },
-      "autoUpdate": true
-    },
-    "obsidian-skills": {
-      "source": {
-        "source": "github",
-        "repo": "kepano/obsidian-skills"
+        "repo": "draekien/skills"
       },
       "autoUpdate": true
     },
@@ -151,17 +164,50 @@
       },
       "autoUpdate": true
     },
-    "draekien-skills": {
+    "waystone-dotnet": {
       "source": {
         "source": "github",
-        "repo": "draekien/skills"
+        "repo": "draekien-industries/waystone-dotnet"
       },
       "autoUpdate": true
     }
   },
-  "effortLevel": "medium",
-  "autoUpdatesChannel": "latest",
+  "outputStyle": "output-styles:example-driven",
+  "effortLevel": "high",
+  "autoUpdatesChannel": "stable",
+  "autoMemoryEnabled": false,
   "autoDreamEnabled": true,
+  "skipWorkflowUsageWarning": true,
+  "theme": "custom:catppuccine-mocha",
+  "editorMode": "normal",
   "preferredNotifChannel": "terminal_bell",
-  "skipAutoPermissionPrompt": true
+  "teammateMode": "auto",
+  "skipAutoPermissionPrompt": true,
+  "autoMode": {
+    "environment": [
+      "$defaults",
+      "### Org-wide",
+      "**Organization**: Draekien Industries",
+      "**Cloud provider(s)**: Vercel",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: `main` (protected); ruleset `Require PR` active on this repo (via gh, authoritative); committing and pushing to `main` is allowed when specified",
+      "**CI/CD deploy targets**: Vercel; Github Pages",
+      "**Network posture**: None configured",
+      "**Host containment**: None configured — assume Claude Code runs on an ordinary developer machine with open internet",
+      "**Source control**: draekien; draekien-industries",
+      "**Trusted internal domains**: wpei.me; *.wpei.me",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development",
+      "**Org-specific CLIs**: None configured — `git`/`gh`/`pnpm`/`yarn`/`dotnet`/`npm`/`npx`/`cargo`/`corepack`/`fnm`/`docfx`/`aspire`/`rustup` seen in shell history are generic developer tooling, not org-specific",
+    ]
+  }
 }
