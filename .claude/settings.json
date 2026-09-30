@@ -100,6 +100,19 @@
           {
             "type": "command",
             "command": "bash \"$HOME/.claude/hooks/no-pwsh-heredoc.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/no-tmp-in-pwsh-command.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/no-stdin-redirect-in-powershell.sh\""
           }
         ]
       }
