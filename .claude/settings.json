@@ -77,7 +77,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
+  "model": "sonnet",
   "disableClaudeAiConnectors": true,
   "disableBundledSkills": false,
   "hooks": {
@@ -87,7 +87,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\William\\.claude\\hooks\\herdr-agent-state.ps1\" session",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"$HOME/.claude/hooks/herdr-agent-state.ps1\" session",
             "timeout": 10
           }
         ]
@@ -110,7 +110,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh 'C:\\Users\\William\\skills\\tldraw-offline\\inject-server-context.sh' SubagentStart"
+            "command": "sh \"$HOME/skills/tldraw-offline/inject-server-context.sh\" SubagentStart"
           }
         ]
       }
@@ -126,6 +126,32 @@
           {
             "type": "command",
             "command": "bash \"$HOME/.claude/hooks/prefer-direct-statements.sh\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/prefer-official-docs.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/prefer-skills.sh\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/prefer-direct-statements.sh\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/prefer-official-docs.sh\"",
             "timeout": 5
           }
         ]
@@ -148,9 +174,8 @@
     "code-simplifier@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": false,
     "mcp-server-dev@claude-plugins-official": false,
-    "rust-analyzer-lsp@claude-plugins-official": false,
     "security-guidance@claude-plugins-official": false,
-    "playwright@claude-plugins-official": true,
+    "playwright@claude-plugins-official": false,
     "impeccable@impeccable": true,
     "waystone-dotnet@waystone-dotnet": true,
     "plugin-dev@claude-plugins-official": false,
@@ -161,10 +186,10 @@
     "context-management-skills@draekien-skills": true,
     "teaching-skills@draekien-skills": true,
     "quality-skills@draekien-skills": true,
-    "software-design-skills@draekien-skills": true,
     "technical-writing-skills@draekien-skills": true,
     "version-control-skills@draekien-skills": true,
-    "agent-config-skills@draekien-skills": true
+    "agent-config-skills@draekien-skills": true,
+    "stripe@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "draekien-skills": {
@@ -191,7 +216,6 @@
   },
   "outputStyle": "output-styles:example-driven",
   "effortLevel": "high",
-  "autoUpdatesChannel": "stable",
   "autoMemoryEnabled": false,
   "autoDreamEnabled": true,
   "skipWorkflowUsageWarning": true,
