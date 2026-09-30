@@ -2,7 +2,8 @@
 cat <<'EOF'
 ## Skills
 
-Scan available skills before each task and invoke what fits — a skill beats
-working from memory. Re-scan when the task shifts or you are about to guess.
-Say which skill you used, or that none fit.
+Before each task, compare the task to the descriptions of the available skills
+and invoke each skill whose description matches. Prefer a skill over working
+from memory. Repeat the comparison when the task changes and before guessing.
+State which skill you used, or that none matched.
 EOF
